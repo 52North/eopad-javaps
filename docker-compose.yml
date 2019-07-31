@@ -1,0 +1,19 @@
+version: '3'
+services:
+  eopad-javaps:
+    build: .
+    image: registry.52north.org/eopad-javaps:2019-07-31
+    ports:
+      - 8080:8080
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 2G
+    environment:
+      - SERVICE_IDENTIFICATION_TITLE={"en":"52°North EOPAD javaPS"}
+      - SERVICE_IDENTIFICATION_ABSTRACT={"en":"52°North javaPS for OGC's Testbed-15 EOPAD Thread"}
+      - SERVICE_SERVICE_URL=https://testbed.dev.52north.org/eopad-javaps/service
+      - SERVICE_PROVIDER_INDIVIDUAL_NAME=Christian Autermann
+      - SERVICE_PROVIDER_POSITION_NAME=Developer
