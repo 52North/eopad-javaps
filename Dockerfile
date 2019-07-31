@@ -4,8 +4,10 @@ WORKDIR /usr/src
 RUN echo "invalidate the cache with another echo string"
 RUN git clone https://github.com/52north/javaPS.git app \
     && git clone https://github.com/52North/javaps-iohandler.git app/javaps-iohandler \
+    && git clone https://github.com/autermann/javaps-rest.git app/javaps-rest \
 	&& git -C ./app/javaps-iohandler checkout develop \
-	&& git -C ./app checkout develop
+	&& git -C ./app/javaps-rest checkout master \
+  && git -C ./app checkout develop
 	
 # -- BUILD all components
 FROM maven:3.5-jdk-8-alpine as BUILD 
@@ -14,6 +16,7 @@ COPY --from=CLONE /usr/src/app /usr/src/app
 COPY ./javaps/javaps-pom.xml /usr/src/app/pom.xml
 RUN mvn -f ./pom.xml clean install -DskipTests -pl !webapp
 RUN mvn -f ./javaps-iohandler/pom.xml clean install
+RUN mvn -f ./javaps-rest/pom.xml clean install
 COPY ./javaps/webapp-pom.xml /usr/src/app/webapp/pom.xml
 RUN mvn -f ./pom.xml install -DskipTests
 
@@ -30,6 +33,7 @@ ENV JAVAPS_LIB ${JAVAPS_ROOT}/WEB-INF/lib
 COPY --from=BUILD /usr/src/app/webapp/target/javaPS-webapp-${JAVAPS_VERSION}/ /var/lib/jetty/webapps/ROOT
 COPY etc/docker-log4j2.xml /var/lib/jetty/webapps/ROOT/WEB-INF/config/log4j2.xml
 COPY etc/docker-configuration.json /var/lib/jetty/webapps/ROOT/WEB-INF/config/configuration.json
+COPY etc/iceland.xml /var/lib/jetty/webapps/ROOT/WEB-INF/classes/components/iceland.xml
 
 USER root
 RUN set -ex \

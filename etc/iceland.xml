@@ -1,0 +1,81 @@
+<!--
+
+    Copyright 2016-2019 52°North Initiative for Geospatial Open Source
+    Software GmbH
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+    <bean id="exceptionLogger" class="org.n52.iceland.service.ExceptionLogger"/>
+
+    <bean class="org.n52.iceland.util.http.HttpUtils"/>
+
+    <bean id="kvpBinding" class="org.n52.iceland.binding.kvp.KvpBinding"/>
+    <bean id="poxBinding" class="org.n52.iceland.binding.pox.PoxBinding"/>
+    <bean id="jsonBinding" class="org.n52.iceland.binding.json.JSONBinding"/>
+    <bean id="soapBinding" class="org.n52.iceland.binding.soap.SoapBinding"/>
+
+    <bean id="owsServiceMetadataRepository" class="org.n52.iceland.ogc.ows.OwsServiceMetadataRepositoryImpl"/>
+
+    <bean id="bindingRepository" class="org.n52.iceland.binding.BindingRepository" />
+    <bean id="supportedTypeRepository" class="org.n52.iceland.coding.SupportedTypeRepository"/>
+    <bean id="owsCapabilitiesExtensionRepository" class="org.n52.iceland.ogc.ows.extension.OwsCapabilitiesExtensionRepository" />
+    <bean id="owsOperationMetadataExtensionProviderRepository" class="org.n52.iceland.ogc.ows.extension.OwsOperationMetadataExtensionProviderRepository" />
+    <bean id="i18nDaoRepository" class="org.n52.iceland.i18n.I18NDAORepository" />
+    <bean id="schemaRepository" class="org.n52.svalbard.encode.SchemaRepository"/>
+    <bean id="operationHandlerRepository" class="org.n52.iceland.request.handler.OperationHandlerRepository" />
+    <bean id="requestResponseModifierRepository" class="org.n52.iceland.convert.RequestResponseModifierRepository" />
+    <bean id="responseWriterRepository" class="org.n52.iceland.coding.encode.ResponseWriterRepository" />
+    <bean id="serviceOperatorRepository" class="org.n52.iceland.service.operator.ServiceOperatorRepository" />
+    <bean id="requestOperatorRepository" class="org.n52.iceland.request.operator.RequestOperatorRepository" />
+    <bean id="converterRepository" class="org.n52.iceland.convert.ConverterRepository" />
+    <bean id="decoderRepository" class="org.n52.svalbard.decode.DecoderRepository" />
+    <bean id="encoderRepository" class="org.n52.svalbard.encode.EncoderRepository" />
+
+    <bean id="documentBuilderProvider" class="org.n52.iceland.coding.DocumentBuilderProvider"/>
+
+    <bean id="icelandServlet" class="org.n52.iceland.service.Service" />
+
+    <bean id="eventListenerRegistrator" class="org.n52.janmayen.event.EventListenerRegistrator">
+        <description>Used to decouple EventListener and EventBus creation.</description>
+    </bean>
+
+    <bean class="org.n52.iceland.util.activation.ActivationRegistrator">
+		<description>Used to wire up activation persistence.</description>
+		<property name="listeners">
+			<map>
+				<entry key-ref="bindingRepository" value="#{activationService.bindingListener}" />
+				<entry key-ref="owsOperationMetadataExtensionProviderRepository" value="#{activationService.owsOperationMetadataExtensionProviderListener}" />
+				<entry key-ref="requestOperatorRepository" value="#{activationService.requestOperatorListener}" />
+			</map>
+		</property>
+		<property name="initializers">
+			<map>
+				<entry key-ref="bindingRepository" value="#{activationService.bindingInitializer}" />
+				<entry key-ref="owsOperationMetadataExtensionProviderRepository" value="#{activationService.owsOperationMetadataExtensionProviderInitializer}" />
+				<entry key-ref="requestOperatorRepository" value="#{activationService.requestOperatorInitializer}" />
+			</map>
+		</property>
+	</bean>
+
+
+    <bean id="fileWatcher" class="org.n52.faroe.SettingsFileWatcher" />
+
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
+
+</beans>
