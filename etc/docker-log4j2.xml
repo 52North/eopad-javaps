@@ -38,7 +38,7 @@
         <Logger name="org.n52.wacodis" level="debug" additivity="false">
             <AppenderRef ref="console"/>
         </Logger>
-        <Logger name="de.wacodis" level="debug" additivity="false">
+        <Logger name="org.n52.wps.eopad" level="debug" additivity="false">
             <AppenderRef ref="console"/>
         </Logger>
 

@@ -136,7 +136,7 @@
     },
     "service.serviceURL" : {
       "type" : "uri",
-      "value" : "http://localhost:8080/service"
+      "value" : "http://localhost:8080/javaPS-webapp-1.4.0-SNAPSHOT/service"
     },
     "filewatcher.enabled" : {
       "type" : "boolean",
@@ -148,7 +148,7 @@
     },
     "misc.baseDirectory" : {
       "type" : "file",
-      "value" : "/var/lib/jetty/webapps/ROOT/WEB-INF/tmp/"
+      "value" : "/tmp/wps/outputs/"
     },
     "misc.duration" : {
       "type" : "string",
@@ -157,6 +157,26 @@
     "misc.checkInterval" : {
       "type" : "string",
       "value" : "PT1H"
+    },
+    "scihub.username" : {
+      "type" : "string",
+      "value" : "asdf"
+    },
+    "scihub.password" : {
+      "type" : "string",
+      "value" : "asdf"
+    },
+    "docker.host" : {
+      "type" : "string",
+      "value" : "unix:///var/run/docker.sock"
+    },
+    "docker.dataDirectory" : {
+      "type" : "string",
+      "value" : "/tmp"
+    },
+    "service.request.timeout" : {
+      "type" : "integer",
+      "value" : 0
     }
   }
 }

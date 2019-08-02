@@ -2,7 +2,7 @@ version: '3'
 services:
   eopad-javaps:
     build: .
-    image: docker.52north.org/eopad-javaps:2019-07-31
+    image: docker.52north.org/eopad-javaps:latest
     ports:
       - 8080:8080
     deploy:
@@ -17,3 +17,9 @@ services:
       - SERVICE_SERVICE_URL=http://localhost:8080/service
       - SERVICE_PROVIDER_INDIVIDUAL_NAME=Christian Autermann
       - SERVICE_PROVIDER_POSITION_NAME=Developer
+      - SCIHUB_USERNAME=asdf
+      - SCIHUB_PASSWORD=asdf
+      - DOCKER_DATA_DIRECTORY=/tmp/eopad
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/eopad:/tmp/eopad
